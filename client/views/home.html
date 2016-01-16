@@ -1,0 +1,41 @@
+<html ng-app="homeApp">
+    <head>
+        <title>Home Screen</title>
+        <link rel="stylesheet" href="../bootstrap/css/bootstrap.min.css">
+        <link rel="stylesheet" hreft="../bootstrap/css/bootstrap-theme.min.css">
+        <script src="../angular/angular.min.js"></script>
+    </head>
+    <body>
+        <div class="container" ng-controller="listController ">
+            <div class ="page-header">
+                <p><h1> Home! </h1></p>             
+            </div>
+            <br><br>
+            <p>Hosgeldiniz ! </p>
+            <button class="btn btn-warning" ng-click="toggle()">Show Users! </button>
+            <br><br>
+            <!-- Kullanıcı listesi paneli -->
+            <div class="panel panel-default">
+                <div class ="panel panel-heading">
+                    <p><h3> Kullanici Listesi </h3></p>
+                </div>
+                <div class="panel panel-body">Sitemizi kullanan kullanicilar bu panelde gosterilmektedir.</div>
+                <table class="table" >
+                    <ul ng-hide="show">
+                        <li ng-repeat="user in userList"><h4> {{user.username}} </h4></li>                      
+                    </ul>
+                </table>
+            </div>
+            <div class="page-footer">
+                <p><h5> <span class="glyphicon glyphicon-search" aria-hidden="true"></span>Bu site Berkay Cavus tarafindan hazirlanmistir.Tum haklar kendisine aittir.</h5></p>
+                 
+            </div>
+            
+        </div>
+        
+        <script src="../controllers/home/homeCtrl.js"></script>
+        <script src="../bootstrap/js/jquery-1.11.3.min.js"></script>
+        <script src="../bootstrap/js/bootstrap.min.js"></script>
+         
+    </body>
+</html>

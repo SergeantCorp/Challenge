@@ -1,0 +1,57 @@
+html(ng-app='homeApp')
+  head
+    title Home Screen
+    link(rel='stylesheet', href='../bootstrap/css/bootstrap.min.css')
+    link(rel='stylesheet', hreft='../bootstrap/css/bootstrap-theme.min.css')
+    script(src='../angular/angular.min.js')
+  body
+    .container(ng-controller='listController ')
+      .page-header
+        p
+        h1  Home! 
+        p
+      br
+      br
+      p Hosgeldiniz ! 
+      .btn-group(role='group', aria-label='...')
+        button.btn.btn-primary(type='button',ng-click='toggleUser()')
+          span.glyphicon.glyphicon-user(aria-hidden='true')
+          |  Kullanicilar
+        button.btn.btn-info(type='button',ng-click='togglePost()')
+          span.glyphicon.glyphicon-envelope(aria-hidden='true')
+          |  Mesajlar
+      br
+      br
+      // Kullanıcı listesi paneli
+      .panel.panel-primary
+        .panel.panel-heading
+          p
+          h3  Kullanici Listesi 
+          p
+        .panel.panel-body Sitemizi kullanan kullanicilar bu panelde gosterilmektedir.
+        table.table
+          ul(ng-hide='showUser')          
+            h4(ng-repeat='name in allNames')
+              span.glyphicon.glyphicon-user(aria-hidden='true', style='color:#337ab7')
+              |  {{name}}
+     
+       .panel.panel-info
+         .panel.panel-heading
+            p
+            h3 Kullanici Mesajlari
+            p
+         .panel.panel-body Sitemizi kullanan kullanicilerin mesajlari bu ekranda gorunmektedir.
+         table.table
+          ul(ng-hide='showPost')          
+            h4(ng-repeat='post in allPosts')
+              span.glyphicon.glyphicon-envelope(aria-hidden='true', style='color:#bce8f1')
+              |  {{post.name}} 
+              abbr(style='color:#b3b3b3') ({{post.pcreated | date:'yyyy-MM-dd HH:mm:ss'}})
+              | : {{post.pbody}}
+      .page-footer
+        p
+        h5  Bu site Berkay Cavus tarafindan hazirlanmistir.Tum haklar kendisine aittir.
+        p
+    script(src='../controllers/home/homeCtrl.js')
+    script(src='../bootstrap/js/jquery-1.11.3.min.js')
+    script(src='../bootstrap/js/bootstrap.min.js')

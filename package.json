@@ -1,0 +1,21 @@
+{
+  "name": "challenge",
+  "version": "1.0.0",
+  "description": "Project:Challenge",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "body-parser": "~1.0.1",
+    "ejs": "^2.3.4",
+    "express": "~4.0.0",
+    "jade": "^1.11.0",
+    "jsonwebtoken": "^5.4.1",
+    "mongoose": "^4.3.4",
+    "morgan": "^1.6.1"
+  },
+  "author": "Berkay Çavuş",
+  "license": "ISC"
+}

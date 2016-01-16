@@ -1,0 +1,35 @@
+---------Business Modal for Twitch Subscribers------
+First:
+-----
+*Language decisions. (Java or Nodejs as Backend,Angular Frontend)  
+  -Do background reserach about these!...
+  -Pros and cons do it!...
+  ...  Done (Project is ASP.NET MVC and ASP.NET Web API)
+
+
+Step 1) 1.5-2 week Front-End Development 
+
+*Front-End (SPA possible = Single-Page Application)
+----------
+ -Html                       (Research + Implementation need) Process:%0
+ -AngularJS                  (Research + Implementation need) Process:%0
+ -Bootstrap                  (Research + Implementation need) Process:%0
+ -Css                        (Research + Implementation need) Process:%0
+ -Custom Javascripts         (Research + Implementation need) Process:%0
+ +Front-End Routing  (Angular)
+ +Front-End Test
+
+Step 2) 2 week Back-End Development
+*Back-End
+----------
+ -ASP.NET MVC
+ -ASP.NET Web API  (For other devices,Android or IOS mobile apps)  
+ -Back-End Test
+Step 3) 1 week Test + Research about servers
+*Project Test
+*Project Deploy (Cloud)   
+
+
+-Twitch-  	
+CliendId: no6kszkaam05znf58r27e3k0bhple84      
+Secret: g3c7ne196mdgknons1us4uav95u3qs8   
