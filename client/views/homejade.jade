@@ -3,6 +3,7 @@ html(ng-app='homeApp')
     title Home Screen
     link(rel='stylesheet', href='../bootstrap/css/bootstrap.min.css')
     link(rel='stylesheet', hreft='../bootstrap/css/bootstrap-theme.min.css')
+    script(src='../angular/angular.min.js')
   body
     .container(ng-controller='listController ')
       .row
@@ -22,7 +23,7 @@ html(ng-app='homeApp')
             |  Mesajlar
         br
         br
-      .row.col-md-6.col-md-offset-3
+      .row
         .panel.panel-danger
           .panel.panel-heading
             p
@@ -43,34 +44,34 @@ html(ng-app='homeApp')
           br
       .row
         // Kullanıcı listesi paneli
-        .col-md-5
-          .panel.panel-primary
-            .panel.panel-heading
-              p
-              h3  Kullanici Listesi 
-              p
-            .panel.panel-body
-              blockquote Sitemizi kullanan kullanicilar bu panelde gosterilmektedir.
-              table.table
-                ul(ng-hide='showUser')
-                  h4(ng-repeat='name in allNames')
-                    span.glyphicon.glyphicon-user(aria-hidden='true', style='color:#337ab7')
-                    |  {{name}}
-        .col-md-6
-          .panel.panel-info
-            .panel.panel-heading
-              p
-              h3 Kullanici Mesajlari
-              p
-            .panel.panel-body
-              blockquote Sitemizi kullanan kullanicilerin mesajlari bu ekranda gorunmektedir.
-              table.table
-                ul(ng-hide='showPost')
-                  h4(ng-repeat='post in allPosts')
-                    span.glyphicon.glyphicon-envelope(aria-hidden='true', style='color:#bce8f1')
-                    |  {{post.name}} 
-                    abbr(style='color:#b3b3b3') ({{post.pcreated | date:'yyyy-MM-dd HH:mm:ss'}})
-                    | : {{post.pbody}}
+       
+        .panel.panel-primary
+          .panel.panel-heading
+            p
+            h3  Kullanici Listesi 
+            p
+          .panel.panel-body
+            blockquote Sitemizi kullanan kullanicilar bu panelde gosterilmektedir.
+            table.table
+              ul(ng-hide='showUser')
+                h4(ng-repeat='name in allNames')
+                  span.glyphicon.glyphicon-user(aria-hidden='true', style='color:#337ab7')
+                  |  {{name}}
+       
+         .panel.panel-info
+           .panel.panel-heading
+             p
+             h3 Kullanici Mesajlari
+             p
+           .panel.panel-body
+             blockquote Sitemizi kullanan kullanicilerin mesajlari bu ekranda gorunmektedir.
+             table.table
+               ul(ng-hide='showPost')
+                 h4(ng-repeat='post in allPosts')
+                   span.glyphicon.glyphicon-envelope(aria-hidden='true', style='color:#bce8f1')
+                   |  {{post.name}} 
+                   abbr(style='color:#b3b3b3') ({{post.pcreated | date:'yyyy-MM-dd HH:mm:ss'}})
+                   | : {{post.pbody}}
         .row.col-md-12
           .page-footer
             p
