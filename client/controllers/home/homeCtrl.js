@@ -1,7 +1,7 @@
  var homeApp = angular.module('homeApp', [])    
  
     .controller('userController',function($scope,$http){
-        var apiData = [];                
+        var apiData = [], userNames = [] , userPosts = [];                
         $http({
             method :'GET',
             url : '/api/user'
@@ -12,12 +12,20 @@
         }) 
         $scope.showUser = true;
         $scope.showPost = true;
+        $scope.showUserForm = true;
+        $scope.showPostForm = true;
         $scope.toggleUser = function() {                                 
               $scope.showUser = !$scope.showUser         
         };
         $scope.togglePost = function() {                                 
               $scope.showPost = !$scope.showPost        
         };
+        $scope.toggleUserForm = function(){
+             $scope.showUserForm = !$scope.showUserForm
+        }
+        $scope.togglePostForm = function(){
+             $scope.showPostForm = !$scope.showPostForm
+        }
         $scope.registerUser = function(){
             var dataObject = {
                 'username' : $scope.username,
@@ -34,10 +42,36 @@
                 $scope.allNames.push(dataObject.username)
             })
         }
+        $scope.sendPost = function(){
+            var postOwner = $scope.username
+            var post = $scope.postBody
+            var postObject  = { 'body' : post}
+            var ownerId = 0;
+            for(var i =0; i<apiData.length;i++){
+                if(apiData[i].username === postOwner){
+                    ownerId = apiData[i]._id;
+                    console.log(ownerId + "--" + postOwner + "-- " +post)
+                    $http({
+                        method :'POST',
+                        url    :'/api/user'+'/'+ownerId +'/posts',
+                        data   : postObject                       
+                    })
+                    .success(function(data,status,headers,config){
+                        console.log(data)
+                        userPosts.push({
+                            'name'     : postOwner,
+                            'pbody'    : post,
+                            'pcreated' : new Date()
+                        })
+                    })
+                }else{
+                    console.log("user yok amk nereye yolluyon")
+                }
+            }
+        }
         
         var getValues = function(apiData){
-            var userNames = [] , userPosts = [];
-          
+                     
           for(var i=0; i< apiData.length;i++){
               userNames[i] = apiData[i].username
               for(var j=0;j<apiData[i].posts.length;j++){                

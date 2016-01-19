@@ -1,41 +1,116 @@
 <html ng-app="homeApp">
-    <head>
-        <title>Home Screen</title>
-        <link rel="stylesheet" href="../bootstrap/css/bootstrap.min.css">
-        <link rel="stylesheet" hreft="../bootstrap/css/bootstrap-theme.min.css">
-        <script src="../angular/angular.min.js"></script>
-    </head>
-    <body>
-        <div class="container" ng-controller="listController ">
-            <div class ="page-header">
-                <p><h1> Home! </h1></p>             
+  <head>
+    <title>Home Screen</title>
+    <link rel="stylesheet" href="../bootstrap/css/bootstrap.min.css"/>
+    <link rel="stylesheet" hreft="../bootstrap/css/bootstrap-theme.min.css"/>
+    <script src="../angular/angular.min.js"></script>
+  </head>
+  <body>
+    <div ng-controller="userController" class="container">
+      <div class="row">
+        <div class="page-header">
+          <p></p>
+          <h1> Home! </h1>
+          <p></p>
+        </div><br/><br/>
+        <h3>Hosgeldiniz ! </h3>
+        <div role="group" aria-label="..." class="btn-group">
+          <button type="button" ng-click="toggleUserForm()" class="btn btn-danger"><span aria-hidden="true" class="glyphicon glyphicon-user"></span> Kayit</button>
+          <button type="button" ng-click="togglePostForm()" class="btn btn-warning"><span aria-hidden="true" class="glyphicon glyphicon-comment"></span> Mesaj Yolla</button>
+          <button type="button" ng-click="toggleUser()" class="btn btn-primary"><span aria-hidden="true" class="glyphicon glyphicon-user"></span> Kullanicilar</button>
+          <button type="button" ng-click="togglePost()" class="btn btn-info"><span aria-hidden="true" class="glyphicon glyphicon-comment"></span> Mesajlar</button>
+        </div><br/><br/>
+      </div>
+      <div class="row">
+        <div class="col-md-6">
+          <div class="panel panel-danger">
+            <div class="panel panel-heading">
+              <p></p>
+              <h3>Kullanici ekle</h3>
+              <p></p>
             </div>
-            <br><br>
-            <p>Hosgeldiniz ! </p>
-            <button class="btn btn-warning" ng-click="toggle()">Show Users! </button>
-            <br><br>
-            <!-- Kullanıcı listesi paneli -->
-            <div class="panel panel-default">
-                <div class ="panel panel-heading">
-                    <p><h3> Kullanici Listesi </h3></p>
-                </div>
-                <div class="panel panel-body">Sitemizi kullanan kullanicilar bu panelde gosterilmektedir.</div>
-                <table class="table" >
-                    <ul ng-hide="show">
-                        <li ng-repeat="user in userList"><h4> {{user.username}} </h4></li>                      
-                    </ul>
-                </table>
+            <div class="panel panel-body">
+              <blockquote>Kullanici eklemek icin asagiyi doldurunuz.</blockquote>
             </div>
-            <div class="page-footer">
-                <p><h5> <span class="glyphicon glyphicon-search" aria-hidden="true"></span>Bu site Berkay Cavus tarafindan hazirlanmistir.Tum haklar kendisine aittir.</h5></p>
-                 
+            <div id="user-form" ng-hide="showUserForm">
+              <div style="margin-bottom: 25px" class="input-group"><span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
+                <input id="login-username" type="text" name="username" value="" placeholder="kullanici adi" ng-model="username" class="form-control"/>
+              </div>
+              <div style="margin-bottom: 25px" class="input-group"><span class="input-group-addon"><i class="glyphicon glyphicon-envelope"></i></span>
+                <input id="login-mail" type="text" name="mail" value="" placeholder="mail" ng-model="email" class="form-control"/>
+              </div>
+              <div style="margin-bottom: 25px" class="input-group"><span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
+                <input id="login-password" type="password" name="password" placeholder="sifre" ng-model="password" class="form-control"/>
+              </div>
+              <div class="input-group col-md-offset-5"><a id="btn-login" href="#" ng-click="registerUser()" class="btn btn-danger btn-lg">Ekle  </a></div><br/>
             </div>
-            
+          </div>
         </div>
-        
-        <script src="../controllers/home/homeCtrl.js"></script>
-        <script src="../bootstrap/js/jquery-1.11.3.min.js"></script>
-        <script src="../bootstrap/js/bootstrap.min.js"></script>
-         
-    </body>
+        <div class="col-md-6">
+          <div class="panel panel-warning">
+            <div class="panel panel-heading">
+              <p></p>
+              <h3>Mesaj yaz</h3>
+              <p></p>
+            </div>
+            <div class="panel panel-body">
+              <blockquote>Mesaj eklemek icin asagiyi doldurunuz.</blockquote>
+            </div>
+            <div id="post-form" ng-hide="showPostForm">
+              <div style="margin-bottom: 10px" class="input-group"><span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
+                <input id="username" type="text" name="username" value="" placeholder="kullanici adi" ng-model="username" class="form-control"/>
+              </div>
+              <div style="margin-bottom: 20px" class="input-group"><span class="input-group-addon"><i class="glyphicon glyphicon-comment"></i></span>
+                <textarea id="comment" rows="5" ng-model="postBody" placeholder="Text giriniz..." class="form-control"></textarea>
+              </div>
+              <div class="input-group col-md-offset-5"><a id="btn-send" href="#" ng-click="sendPost()" class="btn btn-warning btn-lg">Yolla  </a></div><br/>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <!-- Kullanıcı listesi paneli-->
+        <div class="panel panel-primary">
+          <div class="panel panel-heading">
+            <p></p>
+            <h3> Kullanici Listesi </h3>
+            <p></p>
+          </div>
+          <div class="panel panel-body">
+            <blockquote>Sitemizi kullanan kullanicilar bu panelde gosterilmektedir.</blockquote>
+            <table class="table">
+              <ul ng-hide="showUser">
+                <h4 ng-repeat="name in allNames"><span aria-hidden="true" style="color:#337ab7" class="glyphicon glyphicon-user"></span> {{name}}</h4>
+              </ul>
+            </table>
+          </div>
+        </div>
+        <div class="panel panel-info">
+          <div class="panel panel-heading">
+            <p></p>
+            <h3>Kullanici Mesajlari</h3>
+            <p></p>
+          </div>
+          <div class="panel panel-body">
+            <blockquote>Sitemizi kullanan kullanicilerin mesajlari bu ekranda gorunmektedir.</blockquote>
+            <table class="table">
+              <ul ng-hide="showPost">
+                <h4 ng-repeat="post in allPosts"><span aria-hidden="true" style="color:#bce8f1" class="glyphicon glyphicon-comment"></span> {{post.name}} <abbr style="color:#b3b3b3">({{post.pcreated | date:'yyyy-MM-dd HH:mm:ss'}})</abbr>: {{post.pbody}}</h4>
+              </ul>
+            </table>
+          </div>
+        </div>
+        <div class="row col-md-12">
+          <div class="page-footer">
+            <p></p>
+            <h5> Bu site Berkay Cavus tarafindan hazirlanmistir.Tum haklar kendisine aittir.</h5>
+            <p></p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script src="../controllers/home/homeCtrl.js"></script>
+    <script src="../bootstrap/js/jquery-1.11.3.min.js"></script>
+    <script src="../bootstrap/js/bootstrap.min.js"></script>
+  </body>
 </html>

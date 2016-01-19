@@ -13,8 +13,14 @@ html(ng-app='homeApp')
           p
         br
         br
-        p Hosgeldiniz ! 
+        h3 Hosgeldiniz ! 
         .btn-group(role='group', aria-label='...')
+          button.btn.btn-danger(type='button', ng-click='toggleUserForm()')
+            span.glyphicon.glyphicon-user(aria-hidden='true')
+            |  Kayit
+          button.btn.btn-warning(type='button', ng-click='togglePostForm()')
+            span.glyphicon.glyphicon-comment(aria-hidden='true')
+            |  Mesaj Yolla
           button.btn.btn-primary(type='button', ng-click='toggleUser()')
             span.glyphicon.glyphicon-user(aria-hidden='true')
             |  Kullanicilar
@@ -24,31 +30,52 @@ html(ng-app='homeApp')
         br
         br
       .row
-        .panel.panel-danger
-          .panel.panel-heading
-            p
-            h3 Kullanici ekle
-            p
-          .panel.panel-body
-            blockquote Kullanici eklemek icin asagiyi doldurunuz.
-          .input-group(style='margin-bottom: 25px')
-            span.input-group-addon
-              i.glyphicon.glyphicon-user
-            input#login-username.form-control(type='text', name='username', value='', placeholder='username', ng-model='username')
-          .input-group(style='margin-bottom: 25px')
-            span.input-group-addon
-              i.glyphicon.glyphicon-envelope
-            input#login-mail.form-control(type='text', name='mail', value='', placeholder='mail' ng-model='email')
-          .input-group(style='margin-bottom: 25px')
-            span.input-group-addon
-              i.glyphicon.glyphicon-lock
-            input#login-password.form-control(type='password', name='password', placeholder='password' ng-model='password')
-          .input-group.col-md-offset-5
-            a#btn-login.btn.btn-danger.btn-lg(href='#', ng-click='registerUser()') Register  
-          br
+        .col-md-6
+          .panel.panel-danger
+            .panel.panel-heading
+              p
+              h3 Kullanici ekle
+              p
+            .panel.panel-body
+              blockquote Kullanici eklemek icin asagiyi doldurunuz.
+            #user-form(ng-hide='showUserForm')
+              .input-group(style='margin-bottom: 25px')
+                span.input-group-addon
+                  i.glyphicon.glyphicon-user
+                input#login-username.form-control(type='text', name='username', value='', placeholder='kullanici adi', ng-model='username')
+              .input-group(style='margin-bottom: 25px')
+                span.input-group-addon
+                  i.glyphicon.glyphicon-envelope
+                input#login-mail.form-control(type='text', name='mail', value='', placeholder='mail', ng-model='email')
+              .input-group(style='margin-bottom: 25px')
+                span.input-group-addon
+                  i.glyphicon.glyphicon-lock
+                input#login-password.form-control(type='password', name='password', placeholder='sifre', ng-model='password')
+              .input-group.col-md-offset-5
+                a#btn-login.btn.btn-danger.btn-lg(href='#', ng-click='registerUser()') Ekle  
+              br
+        .col-md-6
+          .panel.panel-warning
+            .panel.panel-heading
+              p
+              h3 Mesaj yaz
+              p
+            .panel.panel-body
+              blockquote Mesaj eklemek icin asagiyi doldurunuz.
+            #post-form(ng-hide='showPostForm')
+              .input-group(style='margin-bottom: 10px')
+                span.input-group-addon
+                  i.glyphicon.glyphicon-user
+                input#username.form-control(type='text', name='username', value='', placeholder='kullanici adi', ng-model='username')
+              .input-group(style='margin-bottom: 20px')
+                span.input-group-addon
+                  i.glyphicon.glyphicon-comment
+                textarea#comment.form-control(rows='5', ng-model='postBody', placeholder='Text giriniz...')
+              .input-group.col-md-offset-5
+                a#btn-send.btn.btn-warning.btn-lg(href='#', ng-click='sendPost()') Yolla  
+              br
       .row
         // Kullanıcı listesi paneli
-       
         .panel.panel-primary
           .panel.panel-heading
             p
@@ -61,21 +88,20 @@ html(ng-app='homeApp')
                 h4(ng-repeat='name in allNames')
                   span.glyphicon.glyphicon-user(aria-hidden='true', style='color:#337ab7')
                   |  {{name}}
-       
-         .panel.panel-info
-           .panel.panel-heading
-             p
-             h3 Kullanici Mesajlari
-             p
-           .panel.panel-body
-             blockquote Sitemizi kullanan kullanicilerin mesajlari bu ekranda gorunmektedir.
-             table.table
-               ul(ng-hide='showPost')
-                 h4(ng-repeat='post in allPosts')
-                   span.glyphicon.glyphicon-comment(aria-hidden='true', style='color:#bce8f1')
-                   |  {{post.name}} 
-                   abbr(style='color:#b3b3b3') ({{post.pcreated | date:'yyyy-MM-dd HH:mm:ss'}})
-                   | : {{post.pbody}}
+        .panel.panel-info
+          .panel.panel-heading
+            p
+            h3 Kullanici Mesajlari
+            p
+          .panel.panel-body
+            blockquote Sitemizi kullanan kullanicilerin mesajlari bu ekranda gorunmektedir.
+            table.table
+              ul(ng-hide='showPost')
+                h4(ng-repeat='post in allPosts')
+                  span.glyphicon.glyphicon-comment(aria-hidden='true', style='color:#bce8f1')
+                  |  {{post.name}} 
+                  abbr(style='color:#b3b3b3') ({{post.pcreated | date:'yyyy-MM-dd HH:mm:ss'}})
+                  | : {{post.pbody}}
         .row.col-md-12
           .page-footer
             p
