@@ -14,7 +14,7 @@ var createUser = function(req,res){
 		user.password = req.body.password;
         user.email = req.body.email;
         
-		console.log('name: ' + user.username + ' title: ' + user.password
+		console.log('name: ' + user.username + ' password: ' + user.password
         + ' email: ' + user.email + ' created: ' + user.created);
 		
 		user.save(function(err){

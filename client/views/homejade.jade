@@ -5,7 +5,7 @@ html(ng-app='homeApp')
     link(rel='stylesheet', hreft='../bootstrap/css/bootstrap-theme.min.css')
     script(src='../angular/angular.min.js')
   body
-    .container(ng-controller='listController ')
+    .container(ng-controller='userController')
       .row
         .page-header
           p
@@ -19,7 +19,7 @@ html(ng-app='homeApp')
             span.glyphicon.glyphicon-user(aria-hidden='true')
             |  Kullanicilar
           button.btn.btn-info(type='button', ng-click='togglePost()')
-            span.glyphicon.glyphicon-envelope(aria-hidden='true')
+            span.glyphicon.glyphicon-comment(aria-hidden='true')
             |  Mesajlar
         br
         br
@@ -34,13 +34,17 @@ html(ng-app='homeApp')
           .input-group(style='margin-bottom: 25px')
             span.input-group-addon
               i.glyphicon.glyphicon-user
-            input#login-username.form-control(type='text', name='username', value='', placeholder='username or email')
+            input#login-username.form-control(type='text', name='username', value='', placeholder='username', ng-model='username')
+          .input-group(style='margin-bottom: 25px')
+            span.input-group-addon
+              i.glyphicon.glyphicon-envelope
+            input#login-mail.form-control(type='text', name='mail', value='', placeholder='mail' ng-model='email')
           .input-group(style='margin-bottom: 25px')
             span.input-group-addon
               i.glyphicon.glyphicon-lock
-            input#login-password.form-control(type='password', name='password', placeholder='password')
+            input#login-password.form-control(type='password', name='password', placeholder='password' ng-model='password')
           .input-group.col-md-offset-5
-            a#btn-login.btn.btn-success.btn-lg(href='#') Login  
+            a#btn-login.btn.btn-danger.btn-lg(href='#', ng-click='registerUser()') Register  
           br
       .row
         // Kullanıcı listesi paneli
@@ -68,7 +72,7 @@ html(ng-app='homeApp')
              table.table
                ul(ng-hide='showPost')
                  h4(ng-repeat='post in allPosts')
-                   span.glyphicon.glyphicon-envelope(aria-hidden='true', style='color:#bce8f1')
+                   span.glyphicon.glyphicon-comment(aria-hidden='true', style='color:#bce8f1')
                    |  {{post.name}} 
                    abbr(style='color:#b3b3b3') ({{post.pcreated | date:'yyyy-MM-dd HH:mm:ss'}})
                    | : {{post.pbody}}

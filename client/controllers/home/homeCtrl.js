@@ -1,6 +1,6 @@
  var homeApp = angular.module('homeApp', [])    
  
-    .controller('listController',function($scope,$http){
+    .controller('userController',function($scope,$http){
         var apiData = [];                
         $http({
             method :'GET',
@@ -8,7 +8,7 @@
         })
         .success(function(data,status,headers,config){
             apiData = data
-          getValues(apiData);       
+            getValues(apiData);       
         }) 
         $scope.showUser = true;
         $scope.showPost = true;
@@ -18,6 +18,22 @@
         $scope.togglePost = function() {                                 
               $scope.showPost = !$scope.showPost        
         };
+        $scope.registerUser = function(){
+            var dataObject = {
+                'username' : $scope.username,
+                'password' : $scope.password,
+                'email'    : $scope.email,
+            }
+            $http({
+                method: 'POST',
+                url : '/api/user',
+                data : dataObject
+            })
+            .success(function(data,status,headers,config){
+                console.log(data)
+                $scope.allNames.push(dataObject.username)
+            })
+        }
         
         var getValues = function(apiData){
             var userNames = [] , userPosts = [];
@@ -38,8 +54,4 @@
             console.log(userNames)
             console.log(userPosts)
         } 
-               
-             
-        
-        
- });
+    });   
