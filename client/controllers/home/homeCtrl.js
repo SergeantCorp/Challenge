@@ -42,6 +42,26 @@
                 $scope.allNames.push(dataObject.username)
             })
         }
+        $scope.deleteUser = function(index){
+            var user = userNames[index]
+            var userId = 0;
+            
+            for(var i =0; i < apiData.length; i++){
+                if(apiData[i].username === user){
+                    userId = apiData[i]._id
+                    console.log(userId + ' is the id of ' + user)
+                }
+            }      
+            $http({
+                method: 'DELETE',
+                url:    '/api/user/' + userId
+            })
+            .success(function(data,status,headers,config){
+                    console.log(data)
+                    removeData(index,userNames)
+            })  
+            
+        }
         $scope.sendPost = function(){
             var postOwner = $scope.username
             var post = $scope.postBody
@@ -87,5 +107,13 @@
           $scope.allPosts = userPosts;
             console.log(userNames)
             console.log(userPosts)
-        } 
+        }
+       var removeData = function(index,array){
+           if(index > -1){
+                array.splice(index,1);
+                console.log('new array is : ' + array)
+            }else{
+                console.log('index is < -1,so failed!')
+            }
+       }   
     });   

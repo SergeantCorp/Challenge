@@ -84,10 +84,34 @@ html(ng-app='homeApp')
           .panel.panel-body
             blockquote Sitemizi kullanan kullanicilar bu panelde gosterilmektedir.
             table.table
-              ul(ng-hide='showUser')
-                h4(ng-repeat='name in allNames')
-                  span.glyphicon.glyphicon-user(aria-hidden='true', style='color:#337ab7')
-                  |  {{name}}
+               tr(ng-hide='showUser' ng-repeat='name in allNames')
+                 td
+                    h4
+                      span.glyphicon.glyphicon-user(aria-hidden='true', style='color:#337ab7')
+                      |  {{name}}
+                 td
+                    .btn-group.col-md-offset-8(role='group')
+                      button.btn.btn-info(type='button', ng-click='updateUser($index)' data-toggle='modal' data-target='#updateUserData')
+                       span.glyphicon.glyphicon-check(aria-hidden='true')
+                       |  Guncelle
+                      button.btn.btn-danger(type='button', ng-click='deleteUser($index)')
+                       span.glyphicon.glyphicon-remove(aria-hidden='true')
+                       |  Sil
+             #updateUserData.modal.fade(role='dialog')
+               .modal-dialog
+                 // Modal content
+                 .modal-content
+                     .modal-header
+                         button.close(type='button', data-dismiss='modal') ×
+                         h4.modal-title Kullanici Guncelle
+                     .modal-body
+                         p {{name}} yeni kullanici adiniz:
+                         .input-group(style='margin-bottom: 25px')
+                           span.input-group-addon
+                             i.glyphicon.glyphicon-user
+                           input#login-username.form-control(type='text', name='username', value='', placeholder='kullanici adi', ng-model='username')
+                     .modal-footer
+                         button.btn.btn-default(type='button', data-dismiss='modal') Kapat
         .panel.panel-info
           .panel.panel-heading
             p
@@ -96,12 +120,22 @@ html(ng-app='homeApp')
           .panel.panel-body
             blockquote Sitemizi kullanan kullanicilerin mesajlari bu ekranda gorunmektedir.
             table.table
-              ul(ng-hide='showPost')
-                h4(ng-repeat='post in allPosts')
-                  span.glyphicon.glyphicon-comment(aria-hidden='true', style='color:#bce8f1')
-                  |  {{post.name}} 
-                  abbr(style='color:#b3b3b3') ({{post.pcreated | date:'yyyy-MM-dd HH:mm:ss'}})
-                  | : {{post.pbody}}
+              tr(ng-hide='showPost' ng-repeat='post in allPosts')
+                td
+                     h4
+                        span.glyphicon.glyphicon-comment(aria-hidden='true', style='color:#bce8f1')
+                        |  {{post.name}} 
+                        abbr(style='color:#b3b3b3')
+                        |   ({{post.pcreated | date:'yyyy-MM-dd HH:mm:ss'}})
+                        | : {{post.pbody}}
+                td
+                    .btn-group.col-md-offset-4(role='group')
+                        button.btn.btn-info(type='button', ng-click='updateUserPost()')
+                         span.glyphicon.glyphicon-check(aria-hidden='true')
+                         |  Guncelle
+                        button.btn.btn-danger(type='button', ng-click='deleteUserPost()')
+                         span.glyphicon.glyphicon-remove(aria-hidden='true')
+                         |  Sil
         .row.col-md-12
           .page-footer
             p
