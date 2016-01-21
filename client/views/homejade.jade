@@ -91,7 +91,7 @@ html(ng-app='homeApp')
                       |  {{name}}
                  td
                     .btn-group.col-md-offset-8(role='group')
-                      button.btn.btn-info(type='button', ng-click='updateUser($index)' data-toggle='modal' data-target='#updateUserData')
+                      button.btn.btn-info(type='button', ng-click='openDialogModal($index)' data-toggle='modal' data-target='#updateUserData')
                        span.glyphicon.glyphicon-check(aria-hidden='true')
                        |  Guncelle
                       button.btn.btn-danger(type='button', ng-click='deleteUser($index)')
@@ -102,16 +102,21 @@ html(ng-app='homeApp')
                  // Modal content
                  .modal-content
                      .modal-header
-                         button.close(type='button', data-dismiss='modal') ×
-                         h4.modal-title Kullanici Guncelle
+                         h4.modal-title Kullanici Guncelle                                                                      
                      .modal-body
-                         p {{name}} yeni kullanici adiniz:
+                         blockquote
+                            | Sayin 
+                            span(ng-bind='selectedUser')
+                            | , yeni kullanici adinizi giriniz.
                          .input-group(style='margin-bottom: 25px')
                            span.input-group-addon
                              i.glyphicon.glyphicon-user
-                           input#login-username.form-control(type='text', name='username', value='', placeholder='kullanici adi', ng-model='username')
+                           input#update-username.form-control(type='text', name='username', value='', placeholder='yeni kullanici adi', ng-model='newName')
                      .modal-footer
-                         button.btn.btn-default(type='button', data-dismiss='modal') Kapat
+                         button.btn.btn-primary(type='button', data-dismiss='modal' ng-click='updateUser()')
+                            span.glyphicon.glyphicon-ok(aria-hidden='true')
+                         button.btn.btn-danger(type='button', data-dismiss='modal')
+                            span.glyphicon.glyphicon-remove(aria-hidden='true')
         .panel.panel-info
           .panel.panel-heading
             p
@@ -120,7 +125,7 @@ html(ng-app='homeApp')
           .panel.panel-body
             blockquote Sitemizi kullanan kullanicilerin mesajlari bu ekranda gorunmektedir.
             table.table
-              tr(ng-hide='showPost' ng-repeat='post in allPosts')
+              tr(ng-hide='showPost' ng-repeat="post in allPosts | orderBy : 'pcreated'")
                 td
                      h4
                         span.glyphicon.glyphicon-comment(aria-hidden='true', style='color:#bce8f1')
