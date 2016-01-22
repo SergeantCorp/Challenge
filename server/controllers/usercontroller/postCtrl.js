@@ -44,11 +44,11 @@ var removePost = function(req,res){
 var updatePost = function(req,res){
          User.findById(req.params.id , function(err,user){
             var post = user.posts.id(req.params.postid);
-           
+            console.log(post)
             post.body = req.body.body;
             user.save(function(err){
                 if(err) res.send(err);
-                res.json(post);
+                res.json({message: 'User post updated! '});
             })
             
         })

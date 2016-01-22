@@ -51,7 +51,7 @@
             $scope.email    = ''
             refreshData()
         }
-        $scope.openDialogModal = function(index){
+        $scope.openUserDialogModal = function(index){
             var user = userNames[index]        
             console.log(user)
             $scope.selectedUser = user;
@@ -149,10 +149,45 @@
             .success(function(data,status,headers,config){
                 console.log(data)
                 removeData(postIndex,userPosts)
-            }) 
-            
-                
-            
+            })            
+        }
+        $scope.updatePostDialogModel = function(post){
+            var selectedPost = post
+            var userId = getUserId(selectedPost.name)
+            console.log(selectedPost)
+            $scope.postBody = selectedPost.pbody
+            $scope.selectedPostUser = selectedPost.name
+            $scope.updatePost = function(){
+                var postIndex =userPosts.indexOf(post)
+                var newPostBody = $scope.postBody
+                var postId = 0
+                var newPostObject = { 
+                    'ownerId'  : post.ownerId,
+                    'name'     : post.name,
+                    'pbody'    : newPostBody,
+                    'pcreated' : post.pcreated
+                }
+                for(var i=0; i<apiData.length;i++){
+                    for(var j=0; j<apiData[i].posts.length;j++){
+                        if(apiData[i].posts[j].body === selectedPost.pbody){                       
+                             postId = apiData[i].posts[j]._id                       
+                            }                       
+                        }
+                }           
+                $http({
+                    
+                    method : 'PUT',
+                    url    : '/api/user/' + userId + '/posts/' + postId,
+                    data   : {'body' : newPostBody}
+                    
+                }).success(function(data,status,headers,config){
+                    
+                    console.log(data)
+                    removeData(postIndex,userPosts)
+                    updateData(postIndex,userPosts,newPostObject)
+                    
+                })   
+            }
         }
         
         var getValues = function(apiData){

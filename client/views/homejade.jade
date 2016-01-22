@@ -91,7 +91,7 @@ html(ng-app='homeApp')
                       |  {{name}}
                  td
                     .btn-group.col-md-offset-8(role='group')
-                      button.btn.btn-info(type='button', ng-click='openDialogModal($index)' data-toggle='modal' data-target='#updateUserData')
+                      button.btn.btn-info(type='button', ng-click='openUserDialogModal($index)' data-toggle='modal' data-target='#updateUserData')
                        span.glyphicon.glyphicon-check(aria-hidden='true')
                        |  Guncelle
                       button.btn.btn-danger(type='button', ng-click='deleteUser($index)')
@@ -135,12 +135,32 @@ html(ng-app='homeApp')
                         | : {{post.pbody}}
                 td
                     .btn-group.col-md-offset-4(role='group')
-                        button.btn.btn-info(type='button', ng-click='updateUserPost()')
+                        button.btn.btn-info(type='button', ng-click='updatePostDialogModel(post)' data-toggle='modal' data-target='#updatePostData')
                          span.glyphicon.glyphicon-check(aria-hidden='true')
                          |  Guncelle
                         button.btn.btn-danger(type='button', ng-click='deleteUserPost(post,$index)')
                          span.glyphicon.glyphicon-remove(aria-hidden='true')
                          |  Sil
+           #updatePostData.modal.fade(role='dialog')
+               .modal-dialog
+                 // Modal content
+                 .modal-content
+                     .modal-header
+                         h4.modal-title Mesaj Guncelle                                                                      
+                     .modal-body
+                         blockquote
+                            | Sayin 
+                            span(ng-bind='selectedPostUser')
+                            | , mesajinizi guncelleyebilirsiniz.
+                         .input-group(style='margin-bottom: 25px')
+                           span.input-group-addon
+                             i.glyphicon.glyphicon-comment
+                           textarea#update-postbody.form-control(rows='5', ng-model='postBody')
+                     .modal-footer
+                         button.btn.btn-primary(type='button', data-dismiss='modal' ng-click='updatePost()')
+                            span.glyphicon.glyphicon-ok(aria-hidden='true')
+                         button.btn.btn-danger(type='button', data-dismiss='modal')
+                            span.glyphicon.glyphicon-remove(aria-hidden='true')
         .row.col-md-12
           .page-footer
             p
