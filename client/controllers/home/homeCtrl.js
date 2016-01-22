@@ -102,7 +102,7 @@
             var ownerId = 0;
             for(var i =0; i<apiData.length;i++){
                 if(apiData[i].username === postOwner){
-                    ownerId = apiData[i]._id;
+                    ownerId = apiData[i]._id;                   
                     console.log(ownerId + "--" + postOwner + "-- " +post)
                     $http({
                         method :'POST',
@@ -112,9 +112,10 @@
                     .success(function(data,status,headers,config){
                         console.log(data)
                         userPosts.push({
+                            'ownerId'  : ownerId,
                             'name'     : postOwner,
                             'pbody'    : post,
-                            'pcreated' : new Date()
+                            'pcreated' : new Date()                          
                         })
                     })
                 }else{
@@ -125,6 +126,34 @@
             $scope.postBody = ''
             refreshData()
         }
+        $scope.deleteUserPost = function(post,index){
+            var selectedPost = post
+            var postId=0
+            var userId = getUserId(selectedPost.name)
+            var postIndex = userPosts.indexOf(post)
+           
+            for(var i=0; i<apiData.length;i++){
+                for(var j=0; j<apiData[i].posts.length;j++){
+                    if(apiData[i].posts[j].body === selectedPost.pbody){
+                        console.log(selectedPost,index)
+                        postId = apiData[i].posts[j]._id                       
+                    }
+                        
+                }
+            }
+            
+            $http({
+                method : 'DELETE',
+                url    : '/api/user/' + userId + '/posts/' + postId 
+            })
+            .success(function(data,status,headers,config){
+                console.log(data)
+                removeData(postIndex,userPosts)
+            }) 
+            
+                
+            
+        }
         
         var getValues = function(apiData){
           userNames = [], userPosts = []           
@@ -132,6 +161,7 @@
               userNames[i] = apiData[i].username
               for(var j=0;j<apiData[i].posts.length;j++){                
                   userPosts.push({
+                      'ownerId'  : apiData[i]._id,
                       'name'     : apiData[i].username,
                       'pbody'    : apiData[i].posts[j].body,
                       'pcreated' : apiData[i].posts[j].created
@@ -148,7 +178,8 @@
        var removeData = function(index,array){
            if(index > -1){
                 array.splice(index,1);
-                console.log('new array is : ' + array)
+                console.log('new array is : ')
+                console.log(array)
             }else{
                 console.log('index is < -1,so failed remove!')
             }
@@ -168,5 +199,6 @@
                }
            }
            return userId
-       }   
+       }
+         
     });   

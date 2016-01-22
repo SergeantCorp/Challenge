@@ -125,7 +125,7 @@ html(ng-app='homeApp')
           .panel.panel-body
             blockquote Sitemizi kullanan kullanicilerin mesajlari bu ekranda gorunmektedir.
             table.table
-              tr(ng-hide='showPost' ng-repeat="post in allPosts | orderBy : 'pcreated'")
+              tr(ng-hide='showPost' ng-repeat="post in allPosts | orderBy : '-pcreated'")
                 td
                      h4
                         span.glyphicon.glyphicon-comment(aria-hidden='true', style='color:#bce8f1')
@@ -138,7 +138,7 @@ html(ng-app='homeApp')
                         button.btn.btn-info(type='button', ng-click='updateUserPost()')
                          span.glyphicon.glyphicon-check(aria-hidden='true')
                          |  Guncelle
-                        button.btn.btn-danger(type='button', ng-click='deleteUserPost()')
+                        button.btn.btn-danger(type='button', ng-click='deleteUserPost(post,$index)')
                          span.glyphicon.glyphicon-remove(aria-hidden='true')
                          |  Sil
         .row.col-md-12
