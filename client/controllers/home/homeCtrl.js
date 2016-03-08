@@ -1,20 +1,18 @@
- var homeApp = angular.module('homeApp', [])    
+  angular.module('homeApp', [])  
  
-    .controller('userController',function($scope,$http){
-        var apiData = [], userNames = [] , userPosts = [];
+    .controller('userController',function($scope,$http,User){
         
-        
-        var refreshData = function(){
-            $http({
-                 method :'GET',
-                 url : '/api/user'
-            })
-             .success(function(data,status,headers,config){
-                 apiData = data
-                 getValues(apiData);       
-            }) 
-        }  
-        refreshData()            
+       var self = this;
+       
+        User.getApi()
+        .then(function(api)
+        {   
+                 self.data = api;
+                 $scope.allNames = User.getAllUser(self.data);
+                 $scope.allPosts = User.getAllPosts(self.data);
+                 
+         });
+         
         $scope.showUser = true;
         $scope.showPost = true;
         $scope.showUserForm = true;
@@ -32,69 +30,80 @@
              $scope.showPostForm = !$scope.showPostForm
         }
         $scope.registerUser = function(){
-            var dataObject = {
+            var postData = {
                 'username' : $scope.username,
                 'password' : $scope.password,
                 'email'    : $scope.email,
             }
-            $http({
-                method: 'POST',
-                url : '/api/user',
-                data : dataObject
-            })
-            .success(function(data,status,headers,config){
+           User.RegisterUser(postData)
+            .then(function(data){
                 console.log(data)
-                $scope.allNames.push(dataObject.username)
+                $scope.allNames.push(postData.username)
             })
             $scope.username = ''
             $scope.password = ''
             $scope.email    = ''
-            refreshData()
+                     
         }
+         $scope.deleteUser = function(index){
+            var user = $scope.allNames[index]
+            User.getApi()
+            .then(function(api){
+                User.DeleteUser(api,user) 
+                .then(function(data){
+                    removeData(index,$scope.allNames) 
+                })
+                                           
+            });
+           
+        }
+        
         $scope.openUserDialogModal = function(index){
-            var user = userNames[index]        
+            var user = $scope.allNames[index]        
             console.log(user)
             $scope.selectedUser = user;
             $scope.updateUser = function(){
-                var newUserName = $scope.newName
-                var newUserId = getUserId(user)
-                var updatedObject = {'username' : newUserName}              
-                $http({
-                    method : 'PUT',
-                    url    : '/api/user/' + newUserId,
-                    data   : updatedObject
-                })
-                .success(function(data,status,headers,config){
-                    console.log(data)
-                    console.log(user + ' is updated to ' + newUserName)
-                    removeData(index,userNames)
-                    updateData(index,userNames,newUserName)              
-                })
+                var newUserName = $scope.newName               
+                var updatedObject = {'username' : newUserName}  
+                User.getApi()
+                .then(function(api){
+                    var userId = User.getUserIdByName(api,user)
+                    User.UpdateUser(userId,newUserName,updatedObject)
+                    .then(function(data){
+                        console.log(data)
+                        console.log(user + ' is updated to ' + newUserName)
+                        removeData(index,$scope.allNames)
+                        updateData(index,$scope.allNames,newUserName)              
+                    })
+                })            
+    
             }
             $scope.newName = ''
-            refreshData()
-        }
-        $scope.deleteUser = function(index){
-            var user = userNames[index]
-            var userId = 0;
             
-            for(var i =0; i < apiData.length; i++){
-                if(apiData[i].username === user){
-                    userId = apiData[i]._id
-                    console.log(userId + ' is the id of ' + user)
-                }
-            }      
-            $http({
-                method: 'DELETE',
-                url:    '/api/user/' + userId
-            })
-            .success(function(data,status,headers,config){
-                    console.log(data)
-                    removeData(index,userNames)                  
-            }) 
-            refreshData() 
-            
+                    
         }
+        var removeData = function(index,array){
+           if(index > -1){
+                array.splice(index,1);
+                console.log('new array is : ')
+                console.log(array)
+            }else{
+                console.log('index is < -1,so failed remove!')
+            }
+       }
+       var updateData = function(index,array,value){
+           if(index > -1){
+               array.splice(index,0,value)
+               console.log('new array is : ')
+               console.log(array)              
+           }else{
+               console.log('index is <-1 , so failed update!')
+           }
+       }
+  
+        
+        var apiData = [], userPosts = [];
+       
         $scope.sendPost = function(){
             var postOwner = $scope.username
             var post = $scope.postBody
@@ -124,8 +133,9 @@
             }
             $scope.username = ''
             $scope.postBody = ''
-            refreshData()
+                      
         }
+        
         $scope.deleteUserPost = function(post,index){
             var selectedPost = post
             var postId=0
@@ -151,6 +161,7 @@
                 removeData(postIndex,userPosts)
             })            
         }
+        
         $scope.updatePostDialogModel = function(post){
             var selectedPost = post
             var userId = getUserId(selectedPost.name)
@@ -189,51 +200,5 @@
                 })   
             }
         }
-        
-        var getValues = function(apiData){
-          userNames = [], userPosts = []           
-          for(var i=0; i< apiData.length;i++){
-              userNames[i] = apiData[i].username
-              for(var j=0;j<apiData[i].posts.length;j++){                
-                  userPosts.push({
-                      'ownerId'  : apiData[i]._id,
-                      'name'     : apiData[i].username,
-                      'pbody'    : apiData[i].posts[j].body,
-                      'pcreated' : apiData[i].posts[j].created
-                  })
-              }
-          }
-          
-          $scope.allNames = userNames;
-          $scope.allPosts = userPosts;
-            console.log(userNames)
-            console.log(userPosts)
-        }
-         
-       var removeData = function(index,array){
-           if(index > -1){
-                array.splice(index,1);
-                console.log('new array is : ')
-                console.log(array)
-            }else{
-                console.log('index is < -1,so failed remove!')
-            }
-       }
-       var updateData = function(index,array,value){
-           if(index > -1){
-               array.splice(index,0,value)              
-           }else{
-               console.log('index is <-1 , so failed update!')
-           }
-       }
-       var getUserId = function(name){
-           var userId =0;
-           for(var i = 0; i< apiData.length; i++){
-               if(apiData[i].username === name){
-                   userId = apiData[i]._id
-               }
-           }
-           return userId
-       }
-         
+             
     });   
