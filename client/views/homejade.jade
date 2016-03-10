@@ -5,7 +5,7 @@ html(ng-app='homeApp')
     link(rel='stylesheet', hreft='../bootstrap/css/bootstrap-theme.min.css')
     script(src='../angular/angular.min.js')
   body
-    .container(ng-controller='userController')
+    .container(ng-controller='mainController')
       .row
         .page-header
           p
@@ -30,7 +30,7 @@ html(ng-app='homeApp')
         br
         br
       .row
-        .col-md-6
+        .col-md-6(ng-controller='registerController')
           .panel.panel-danger
             .panel.panel-heading
               p
@@ -54,7 +54,7 @@ html(ng-app='homeApp')
               .input-group.col-md-offset-5
                 a#btn-login.btn.btn-danger.btn-lg(href='#', ng-click='registerUser()') Ekle  
               br
-        .col-md-6
+        .col-md-6(ng-controller='messageController')
           .panel.panel-warning
             .panel.panel-heading
               p
@@ -74,7 +74,7 @@ html(ng-app='homeApp')
               .input-group.col-md-offset-5
                 a#btn-send.btn.btn-warning.btn-lg(href='#', ng-click='sendPost()') Yolla  
               br
-      .row
+      .row(ng-controller='userListController')
         // Kullanıcı listesi paneli
         .panel.panel-primary
           .panel.panel-heading
@@ -117,7 +117,7 @@ html(ng-app='homeApp')
                             span.glyphicon.glyphicon-ok(aria-hidden='true')
                          button.btn.btn-danger(type='button', data-dismiss='modal')
                             span.glyphicon.glyphicon-remove(aria-hidden='true')
-        .panel.panel-info
+        .panel.panel-info(ng-controller='messageListController')
           .panel.panel-heading
             p
             h3 Kullanici Mesajlari
@@ -168,6 +168,8 @@ html(ng-app='homeApp')
             p  
     
     script(src='../controllers/home/homeCtrl.js')
+    script(src='../services/apiService.js')
     script(src='../services/userService.js')
+    script(src='../services/postService.js')
     script(src='../bootstrap/js/jquery-1.11.3.min.js')
     script(src='../bootstrap/js/bootstrap.min.js')
